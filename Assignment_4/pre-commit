@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Only run this when on the main branch
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+if [ "$current_branch" = "main" ]; then
+    echo "🔍 Running tests before committing to 'main' branch..."
+
+    # Navigate to Assignment04 folder (adjust path if needed)
+    cd Assignment04 || exit 1
+
+    # Run tests with coverage and save the report
+    pytest test.py --cov=test --cov-report=term-missing > coverage.txt
+
+
+    # Check if tests passed
+    if [ $? -eq 0 ]; then
+        echo "✅ All tests passed. Proceeding with commit."
+        exit 0
+    else
+        echo "❌ Tests failed. Fix them before committing!"
+        exit 1
+    fi
+fi
